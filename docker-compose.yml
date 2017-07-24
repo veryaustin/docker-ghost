@@ -5,6 +5,8 @@ services:
     image: ghost:latest
     ports:
       - "80:2368"
+    env_file:
+      - ghost-variables.env
     networks:
       - ghost-net
     volumes:
