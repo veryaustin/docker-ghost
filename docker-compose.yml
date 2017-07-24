@@ -12,10 +12,18 @@ services:
 
   postgreql:
     image: postgres:9.6.3
-    volumes: 
-      - pg-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: veryaustinwriting
+      POSTGRES_USER: /run/secrets/pg_user
+      POSTGRES_PASSWORD: /run/secrets/pg_password
     networks:
       - ghost-net
+    volumes: 
+      - pg-data:/var/lib/postgresql/data
+    secrets:
+    - pg_user
+    - pg_password
+
 
 volumes:
   ghost-data:
@@ -26,3 +34,9 @@ networks:
 
 networks:
     ghost-net:
+
+secrets:
+  pg_user: 
+    file: ./secrets/pg_user_secret.txt
+  pg_password: 
+    file: ./secrets/pg_password_secret.txt
