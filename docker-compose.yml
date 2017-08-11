@@ -1,44 +1,16 @@
 version: '3.1'
 
-services: 
+services:
   ghost:
-    image: ghost:latest
-    ports:
-      - "80:2368"
-    env_file:
-      - ghost-variables.env
+    build: ./ghost
+    image: veryaustin-ghost
     networks:
-      - ghost-net
+      - ghost_net
     volumes:
-      - ghost-data:/var/lib/ghost
-
-  postgreql:
-    image: postgres:9.6.3
-    environment:
-      POSTGRES_DB: veryaustinwriting
-      POSTGRES_USER: /run/secrets/pg_user
-      POSTGRES_PASSWORD: /run/secrets/pg_password
-    networks:
-      - ghost-net
-    volumes: 
-      - pg-data:/var/lib/postgresql/data
-    secrets:
-    - pg_user
-    - pg_password
-
-
+      - ghost_content:/var/lib/ghost
+      - ./ghost/config.js:/var/lib/ghost/config.js
 volumes:
-  ghost-data:
-  pg-data:
+  ghost_content:
 
 networks:
-  ghost-net:
-
-networks:
-    ghost-net:
-
-secrets:
-  pg_user: 
-    file: ./secrets/pg_user_secret.txt
-  pg_password: 
-    file: ./secrets/pg_password_secret.txt
+  ghost_net:
